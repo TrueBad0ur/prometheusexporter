@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  prometheus:
+    restart: always
+    network_mode: host
+    image: prom/prometheus
+    container_name: prometheus
+    #ports:
+    #- "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana:latest
+    network_mode: host
+    container_name: grafana
+    #volumes:
+    #  - ./grafana_data:/var/lib/grafana
+    #  - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: always
+    #ports:
+    #- "3000:3000"

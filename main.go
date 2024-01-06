@@ -39,8 +39,10 @@ func (collector *Collector) Describe(ch chan<- *prometheus.Desc) {
 func (collector *Collector) Collect(ch chan<- prometheus.Metric) {
 	m1 := prometheus.MustNewConstMetric(collector.NumberOfProcessesMetric, prometheus.GaugeValue, getNumberOfProcesses())
 	m2 := prometheus.MustNewConstMetric(collector.NumberOfNetworkInterfaces, prometheus.GaugeValue, getNumberOfNetworkInterfaces())
-	m1 = prometheus.NewMetricWithTimestamp(time.Now().Add(-time.Hour), m1)
+
+	m1 = prometheus.NewMetricWithTimestamp(time.Now(), m1)
 	m2 = prometheus.NewMetricWithTimestamp(time.Now(), m2)
+
 	ch <- m1
 	ch <- m2
 }
@@ -81,6 +83,6 @@ func main() {
 	collector := newCollector()
 	prometheus.MustRegister(collector)
 
-	http.Handle("/console/metrics", promhttp.Handler())
-	log.Fatal(http.ListenAndServe(":9101", nil))
+	http.Handle("/metrics", promhttp.Handler())
+	log.Fatal(http.ListenAndServe(":9100", nil))
 }
