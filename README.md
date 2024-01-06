@@ -1,6 +1,6 @@
 # Custom simple template for prometheus exporter and grafana dashboard
 
-
+![dashboard](dashboard.png)
 
 # Run
 ```bash
